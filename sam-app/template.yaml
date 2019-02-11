@@ -5,10 +5,17 @@ Description: >
 
     Sample SAM Template for sam-app
 
-# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Parameters:
+    Env:
+        Type: String
+        Default: local
+
 Globals:
     Function:
         Timeout: 3
+        Environment:
+            Variables:
+                ENV: !Ref Env
 
 
 Resources:

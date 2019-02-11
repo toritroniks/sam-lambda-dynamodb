@@ -1,4 +1,8 @@
 import json
+import boto3
+import os
+import logging
+from datetime import datetime
 
 # import requests
 
@@ -33,6 +37,45 @@ def lambda_handler(event, context):
 
     #     raise e
 
+    try:
+        logger = logging.getLogger()
+        logger.setLevel(logging.INFO)
+
+        session = boto3.session.Session()
+        awsRegion = session.region_name
+        paramList = event['queryStringParameters']
+
+        client = boto3.client('dynamodb')
+        # ローカルの場合
+        if os.environ['ENV'] == 'local':
+            dynamodb = boto3.resource('dynamodb', region_name = awsRegion, endpoint_url = "http://dynamodb:8000")
+        # ローカル以外の環境の場合
+        else:
+            dynamodb = boto3.resource('dynamodb', region_name = awsRegion)
+        # テーブルを取得
+        table = dynamodb.Table('Access')
+        # 日時の文字列
+        date = datetime.utcnow().isoformat()
+        # 登録するアイテムのベース
+        item = {'Path': event['path'], 'Date': date}
+
+        if paramList != None:
+            for key,value in paramList.items():
+                item[key] = value
+
+        table.put_item(
+            Item=item
+        )
+
+    except Exception as e:
+        # Lambdaログにエクセプションの情報を入れる
+        logger.exception(e)
+        return {
+            'statusCode': 500,
+            'body': json.dumps({
+                'error_message': str(e)
+            }),
+        }
     return {
         "statusCode": 200,
         "body": json.dumps({

@@ -6,7 +6,7 @@
       "KeyType": "HASH"
     },
     {
-      "AttributeName": "Name",
+      "AttributeName": "Date",
       "KeyType": "RANGE"
     }
   ],
@@ -16,7 +16,7 @@
       "AttributeType": "S"
     },
     {
-      "AttributeName": "Name",
+      "AttributeName": "Date",
       "AttributeType": "S"
     }
   ],
