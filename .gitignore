@@ -1,0 +1,4 @@
+venv
+.vscode
+sam-app/tests
+post.md
