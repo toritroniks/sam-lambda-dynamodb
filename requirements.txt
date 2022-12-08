@@ -6,7 +6,7 @@ awscli==1.16.101
 binaryornot==0.4.4
 boto3==1.9.91
 botocore==1.12.91
-certifi==2018.11.29
+certifi==2022.12.7
 chardet==3.0.4
 chevron==0.13.1
 click==6.7
